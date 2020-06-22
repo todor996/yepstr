@@ -1,12 +1,28 @@
 import * as React from 'react';
 import { FunctionComponent, useState, useEffect } from 'react';
 import axios from 'axios';
+import CardList from "./components/CardList";
+
+interface ICardProp {
+    image?: string;
+    code?: string;
+    images?: any;
+    suit?: string;
+    value?: string;
+}
+
+interface ICardProps extends Array<ICardProp>{}
+
+interface IDeck {
+    id?: string;
+    cards?: ICardProps;
+    remaining?: number;
+}
 
 const App: FunctionComponent = () => {
 
-    const [cardCount, setCardCount] = useState(0);
-    const [fetch, setFetch] = useState(false);
-    const [deck, setDeck] = useState({id: null, cards: [], remaining: 52});
+    const [fetch, setFetch] = useState<boolean>(false);
+    const [deck, setDeck] = useState<IDeck>({id: null, cards: [], remaining: 52});
     const [result, setResult] = useState(false);
     const [guess, setGuess] = useState(null);
     const [correctGuess, setCorrectGuess] = useState(0);
@@ -47,7 +63,6 @@ const App: FunctionComponent = () => {
                 remaining: data.remaining,
                 cards: [...deck.cards, data.cards[0]],
             });
-            setCardCount(cardCount + 1);
         };
         next();
     }, [fetch]);
@@ -58,7 +73,7 @@ const App: FunctionComponent = () => {
                 <button onClick={handleSubmit}>Guess next </button>
             </div>
             <div>
-                Card count: {cardCount}
+                Card count: {52 - deck.remaining}
             </div>
             <div>
                 Correct guesses: {correctGuess}
@@ -66,6 +81,12 @@ const App: FunctionComponent = () => {
             <div>
                 Last guess result: {result.toString()}
             </div>
+            <div>
+                {deck.cards.map(card => {
+                    return (<img src={card.image} />)
+                })}
+            </div>
+            {/*<CardList cards={deck.cards} />*/}
         </div>
     );
 };

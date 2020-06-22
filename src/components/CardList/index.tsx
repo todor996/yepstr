@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+
 interface ICardProp {
   image?: string;
   code?: string;
@@ -7,13 +9,15 @@ interface ICardProp {
   value?: string;
 }
 
-const CardList = (cards: any) => {
+interface ICardProps extends Array<ICardProp>{}
+
+const CardList = (cards: ICardProps) => {
   return (
       <div>
         CardList:
-          {cards.map((card) =>
-            <img src={card.image} />)
-          };
+          {cards.map((card) =>{
+            return <img src={card.image} />)
+          }};
       </div>
   );
 };
